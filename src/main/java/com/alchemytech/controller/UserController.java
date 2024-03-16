@@ -18,7 +18,7 @@ import com.alchemytech.dto.UserDTO;
 import com.alchemytech.service.UserService;
 
 @RestController
-@RequestMapping("api/user")
+@RequestMapping("api/users")
 public class UserController {
 
 	private UserService service;
@@ -28,31 +28,31 @@ public class UserController {
 		this.service = service;
 	}
 
-	@GetMapping("/getUserById/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<UserDTO> getUserById(@PathVariable("id") int id) {
 		UserDTO dto = service.getUserById(id);
 		return ResponseEntity.ok(dto);
 	}
 
-	@PostMapping("/createUser")
+	@PostMapping
 	public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO dto) {
 		UserDTO newUser = service.createUser(dto);
 		return new ResponseEntity<>(newUser, HttpStatus.CREATED);
 	}
 
-	@PutMapping("/updateUser/{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<UserDTO> updateUser(@PathVariable("id") int id, @RequestBody UserDTO dto) {
 		UserDTO userUpdated = service.updateUser(id, dto);
 		return new ResponseEntity<>(userUpdated, HttpStatus.OK);
 	}
 
-	@DeleteMapping("/deleteUser/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<String> deleteUser(@PathVariable("id") int id) {
 		String deleteUser = service.deleteUser(id);
 		return new ResponseEntity<String>(deleteUser, HttpStatus.OK);
 	}
 
-	@GetMapping("/getAllUsers")
+	@GetMapping
 	public ResponseEntity<List<UserDTO>> getAllUsers() {
 		List<UserDTO> allUsers = service.getAllUsers();
 		return new ResponseEntity<List<UserDTO>>(allUsers, HttpStatus.OK);
