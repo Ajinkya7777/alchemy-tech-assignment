@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
 			entity.setName(dto.getName());
 			entity.setEmail(dto.getEmail());
 			entity.setDate(dto.getDate());
-			UserEntity updatedEntity = repo.save(entity);
+			repo.save(entity);
 			return "User Updated Successfully..!";
 		} else {
 			return "User not found";
@@ -62,8 +62,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public String deleteUser(int id) {
-		repo.deleteById(id);
-		return "User Deleted Successfully";
+		Optional<UserEntity> optional = repo.findById(id);
+		if (optional.get() != null) {
+			repo.deleteById(id);
+			return "User Deleted Successfully...!";
+		} else {
+			return "User Not Found...!";
+		}
+
 	}
 
 	@Override
