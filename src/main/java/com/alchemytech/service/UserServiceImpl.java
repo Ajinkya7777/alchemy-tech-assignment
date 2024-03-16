@@ -44,18 +44,20 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDTO updateUser(int id, UserDTO dto) {
+	public String updateUser(int id, UserDTO dto) {
 		UserEntity entity = null;
 		Optional<UserEntity> optional = repo.findById(id);
 		if (optional.get() != null) {
 			entity = optional.get();
+			entity.setName(dto.getName());
+			entity.setEmail(dto.getEmail());
+			entity.setDate(dto.getDate());
+			UserEntity updatedEntity = repo.save(entity);
+			return "User Updated Successfully..!";
+		} else {
+			return "User not found";
 		}
-		entity.setName(dto.getName());
-		entity.setEmail(dto.getEmail());
-		entity.setDate(dto.getDate());
-		UserEntity updatedEntity = repo.save(entity);
 
-		return mapper.entityToDto(updatedEntity);
 	}
 
 	@Override
