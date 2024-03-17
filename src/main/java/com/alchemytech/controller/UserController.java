@@ -31,13 +31,22 @@ public class UserController {
 	@GetMapping("/{id}")
 	public ResponseEntity<UserDTO> getUserById(@PathVariable("id") int id) {
 		UserDTO dto = service.getUserById(id);
-		return ResponseEntity.ok(dto);
+		if (dto != null) {
+			return new ResponseEntity<>(dto, HttpStatus.OK);
+		}
+
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 	@PostMapping
 	public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO dto) {
+
 		UserDTO newUser = service.createUser(dto);
-		return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+		if (newUser != null) {
+			return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+		} else {
+			return new ResponseEntity<UserDTO>(HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	@PutMapping("/{id}")

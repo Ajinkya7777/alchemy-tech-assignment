@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
 	public UserDTO getUserById(int id) {
 		UserEntity entity = null;
 		Optional<UserEntity> optional = repo.findById(id);
-		if (optional.get() != null) {
+		if (optional.isPresent()) {
 			entity = optional.get();
 		}
 
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 	public String updateUser(int id, UserDTO dto) {
 		UserEntity entity = null;
 		Optional<UserEntity> optional = repo.findById(id);
-		if (optional.get() != null) {
+		if (optional.isPresent()) {
 			entity = optional.get();
 			entity.setName(dto.getName());
 			entity.setEmail(dto.getEmail());
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
 			repo.save(entity);
 			return "User Updated Successfully..!";
 		} else {
-			return "User not found";
+			return "User not found...!";
 		}
 
 	}
@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public String deleteUser(int id) {
 		Optional<UserEntity> optional = repo.findById(id);
-		if (optional.get() != null) {
+		if (optional.isPresent()) {
 			repo.deleteById(id);
 			return "User Deleted Successfully...!";
 		} else {
@@ -74,8 +74,11 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDTO createUser(UserDTO dto) {
-
-		return mapper.entityToDto(repo.save(mapper.dtoToEntity(dto)));
+		if (dto != null) {
+			return mapper.entityToDto(repo.save(mapper.dtoToEntity(dto)));
+		} else {
+			return null;
+		}
 	}
 
 }
